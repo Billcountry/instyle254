@@ -1,4 +1,4 @@
-export const fonts = { title: "Quando", body: "Judson" }
+export const fonts = { title: "Quando", body: "Roboto" }
 
 export const colors = {
     theme: {
