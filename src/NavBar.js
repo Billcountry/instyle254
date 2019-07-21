@@ -19,9 +19,9 @@ export default function NavBar(props) {
             color: colors.theme.red,
         },
         {
-            label: "Support",
-            icon: "contact_support",
-            to: "/support",
+            label: "Contact",
+            icon: "perm_phone_msg",
+            to: "/contact",
             color: colors.theme.orange,
         },
         {
