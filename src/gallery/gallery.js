@@ -1,6 +1,8 @@
 import React from "react"
 import { BodyContainer } from "../components/containers"
 import styled from "styled-components"
+import { Link } from "react-router-dom"
+import images from "../images/gallery_files"
 
 export default function Gallery() {
     const categories = [
@@ -14,6 +16,44 @@ export default function Gallery() {
         { label: "Price Highest", value: "high" },
         { label: "Price Lowest", value: "low" },
         { label: "Oldest", value: "oldest" },
+    ]
+    const gallery = [
+        {
+            image: images.drawing,
+            type: "Drawing",
+            title: "Something something",
+            published: "Jun 20 2019",
+        },
+        {
+            image: images.photo,
+            type: "Photo",
+            title: "Something something",
+            published: "Jun 20 2019",
+        },
+        {
+            image: images.jewel,
+            type: "Jewellery",
+            title: "Something something",
+            published: "Jun 20 2019",
+        },
+        {
+            image: images.jewel2,
+            type: "Jewellery",
+            title: "Something something",
+            published: "Jun 20 2019",
+        },
+        {
+            image: images.photo2,
+            type: "Photo",
+            title: "Something something",
+            published: "Jun 20 2019",
+        },
+        {
+            image: images.drawing2,
+            type: "Drawing",
+            title: "Something something",
+            published: "Jun 20 2019",
+        },
     ]
     return (
         <BodyContainer>
@@ -47,6 +87,34 @@ export default function Gallery() {
                     </Input>
                 </RightContainer>
             </HeaderContainer>
+            {gallery.map(item => {
+                return (
+                    <GalleryItem key={item.image}>
+                        <img src={item.image} alt="" />
+                        <GalleryItemContent>
+                            <h2>{item.title}</h2>
+                            <p>
+                                Eiusmod et aliqua nisi duis laboris in deserunt
+                                excepteur anim. Excepteur Lorem labore proident
+                                dolore. Est commodo ex veniam eiusmod enim
+                                commodo anim consectetur qui ex do laboris
+                                labore. Aliqua esse duis labore incididunt
+                                aliqua ullamco dolor magna aliquip do nisi
+                                officia. Mollit anim excepteur commodo culpa
+                                incididunt laboris veniam anim nulla amet.
+                                Deserunt et adipisicing do pariatur consectetur
+                                ad mollit esse enim quis pariatur nostrud.
+                            </p>
+                            <GalleryFoot>
+                                <small>
+                                    Published: <strong>{item.published}</strong>
+                                </small>
+                                <Buy to="" />
+                            </GalleryFoot>
+                        </GalleryItemContent>
+                    </GalleryItem>
+                )
+            })}
         </BodyContainer>
     )
 }
@@ -88,4 +156,69 @@ const Input = styled.div`
 
 const Option = styled.option`
     padding: 20px 30px !important;
+`
+
+const GalleryItem = styled.div`
+    display: flex;
+    margin: 10px;
+    background-color: #ffffffdd;
+    padding: 20px;
+    img {
+        height: 300px;
+        width: auto;
+    }
+    :nth-child(2n) {
+        flex-direction: row-reverse;
+    }
+    h2 {
+        line-height: 1em;
+        margin-bottom: 0;
+    }
+    @media screen and (max-width: 800px) {
+        flex-direction: column;
+        align-items: stretch;
+        position: relative;
+        :nth-child(2n) {
+            flex-direction: column;
+        }
+        img {
+            height: auto;
+        }
+        h2 {
+            top: 0;
+            position: absolute;
+            z-index: 3;
+            background-color: #ffffffcc;
+        }
+    }
+`
+
+const GalleryItemContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 22px;
+    margin: 0 10px;
+    text-align: justify;
+    line-height: 1.5em;
+`
+
+const GalleryFoot = styled.div`
+    display: flex;
+    justify-content: space-between;
+    @media screen and (max-width: 600px) {
+        flex-direction: column;
+    }
+`
+
+const Buy = styled(Link)`
+    font-size: 22px;
+    font-style: italic;
+    text-decoration: none;
+    font-weight: 700;
+    color: #444444;
+    border-bottom: 2px solid #444444;
+    ::before {
+        content: "View & Buy";
+    }
 `
