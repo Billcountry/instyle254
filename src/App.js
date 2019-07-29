@@ -11,6 +11,7 @@ function App() {
             <NavBar />
             <Route exact component={Home} path="/" />
             <Route exact component={Categories} path="/gallery" />
+            <Route exact component={Gallery} path="/gallery/:category" />
         </BrowserRouter>
     )
 }
