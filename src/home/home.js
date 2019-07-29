@@ -10,7 +10,7 @@ export default function Home() {
         <div>
             <HomeContainer>
                 <HomeCall>
-                    <p style={{ marginBottom: 0 }}>Show off Kenyan style</p>
+                    <p style={{ marginBottom: 0 }}>We are a one stop solution for Art and media advertisements</p>
                     <GalleryButton to="/gallery">Get Started</GalleryButton>
                     <img
                         src={banner}
