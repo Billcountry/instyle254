@@ -6,7 +6,8 @@
 /.firebase
 /.pnp
 .pnp.js
-
+functions/secrets.js
+src/secrets.js
 # testing
 /coverage
 
