@@ -64,17 +64,6 @@ export default function Gallery() {
                 </Input>
                 <RightContainer>
                     <Input>
-                        Category
-                        <i className="material-icons">chevron_right</i>
-                        <select>
-                            {categories.map(item => (
-                                <Option key={item.value} value={item.value}>
-                                    {item.label}
-                                </Option>
-                            ))}
-                        </select>
-                    </Input>
-                    <Input>
                         Sort
                         <i className="material-icons">chevron_right</i>
                         <select>
@@ -130,10 +119,6 @@ const HeaderContainer = styled.div`
 
 const RightContainer = styled.div`
     display: flex;
-    @media screen and (max-width: 500px) {
-        flex-direction: column;
-        align-items: stretch;
-    }
 `
 
 const Input = styled.div`
