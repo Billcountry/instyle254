@@ -6,4 +6,7 @@ export const colors = {
         orange: "#ff9800",
         teal: "#009688",
     },
+    font: {
+        default: "#666666"
+    }
 }
