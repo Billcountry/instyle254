@@ -3,30 +3,35 @@ import styled from "styled-components"
 import logo from "./images/logo.png"
 import { fonts, colors } from "./constants"
 import { NavLink, Link } from "react-router-dom"
+import { bool } from "prop-types"
 
 export default function NavBar(props) {
     const menu = [
         {
             label: "Gallery",
             icon: "insert_photo",
+            exact: false,
             to: "/gallery",
             color: colors.theme.teal,
         },
         {
             label: "Cart",
             icon: "shopping_basket",
+            exact: true,
             to: "/cart",
             color: colors.theme.red,
         },
         {
             label: "Contact",
             icon: "perm_phone_msg",
+            exact: true,
             to: "/contact",
             color: colors.theme.orange,
         },
         {
             label: "Account",
             icon: "account_circle",
+            exact: true,
             to: "/account",
             color: colors.theme.teal,
         },
@@ -36,7 +41,7 @@ export default function NavBar(props) {
             <Brand to="/" />
             <MenuContainer>
                 {menu.map(item => (
-                    <MenuItem key={item.to} to={item.to}>
+                    <MenuItem key={item.to} to={item.to} exact={!!item.exact}>
                         <i
                             style={{
                                 color: item.color,
