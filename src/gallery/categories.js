@@ -5,14 +5,22 @@ import pencil from "../images/pencil.jpg"
 import canvas from "../images/canvas.png"
 import skulpture from "../images/skulpture.png"
 import { Link } from "react-router-dom"
-import { colors } from "../constants"
+import { colors, categories } from "../constants"
 
 export default function Categories() {
     const menu_items = [
-        { to: "/gallery/canvas", icon: canvas, title: "Canvas Painting" },
-        { to: "/gallery/pencil", icon: pencil, title: "Pencil Drawing" },
         {
-            to: "/gallery/skulptures",
+            to: "/gallery/" + categories.canvas,
+            icon: canvas,
+            title: "Canvas Painting",
+        },
+        {
+            to: "/gallery/" + categories.pencil,
+            icon: pencil,
+            title: "Pencil Drawing",
+        },
+        {
+            to: "/gallery/" + categories.skulpture,
             icon: skulpture,
             title: "Carved Skulptures",
         },
