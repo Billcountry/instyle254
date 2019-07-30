@@ -58,9 +58,55 @@ export default class Gallery extends Component {
                 amount: Math.round(Math.random() * 10) * 100,
             },
         ]
+
+        this.state = {
+            buying: false,
+            phone: "",
+        }
+    }
+
+    showPhoneInput(item) {
+        this.setState({ buying: item })
+    }
+
+    phoneUpdated(evt, value) {
+        this.setState({
+            phone: evt.target.value,
+        })
+    }
+
+    completePayment() {
+        const { phone, buying } = this.state
+        const amount = this.gallery[buying].amount || 100
+        if (phone.length !== 10) {
+            window.alert(
+                "Phone number must be 10 characters in format 07XXYYYXXX"
+            )
+            return
+        }
+        window
+            .fetch(
+                `https://hooks.zapier.com/hooks/catch/4341041/ooc7sws/?phone=${phone}&amount=${amount}`
+            )
+            .then(response => {
+                if (response.ok) {
+                    this.setState({ buying: false })
+                    window.alert(
+                        "Payment request sent, please wait to enter your MPesa PIN"
+                    )
+                } else {
+                    console.log(response)
+                    window.alert("Payment request failed, please try again")
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                window.alert("Payment request failed, please try again")
+            })
     }
 
     render() {
+        const { buying, phone } = this.state
         return (
             <BodyContainer>
                 <HeaderContainer>
@@ -84,7 +130,7 @@ export default class Gallery extends Component {
                 </HeaderContainer>
                 {this.gallery.map((item, index) => {
                     return (
-                        <GalleryItem key={item.image}>
+                        <GalleryItem key={index}>
                             <GalleryItemContent
                                 className={index % 2 ? "even" : "odd"}>
                                 <img src={item.image} alt="" />
@@ -99,12 +145,57 @@ export default class Gallery extends Component {
                                     </p>
                                 </div>
                             </GalleryItemContent>
-                            <GalleryFoot>
-                                <p>
-                                    Published: <strong>{item.published}</strong>
-                                </p>
-                                <Buy>Buy @ {item.amount || 100}</Buy>
-                            </GalleryFoot>
+                            {buying !== index && (
+                                <GalleryFoot>
+                                    <p>
+                                        Published:{" "}
+                                        <strong>{item.published}</strong>
+                                    </p>
+                                    <Buy
+                                        onClick={this.showPhoneInput.bind(
+                                            this,
+                                            index
+                                        )}>
+                                        Buy @ {item.amount || 100}
+                                    </Buy>
+                                </GalleryFoot>
+                            )}
+                            {buying === index && (
+                                <GalleryFoot>
+                                    <GrayInput>
+                                        <strong>
+                                            Pay KES {item.amount || 100} via
+                                            MPesa:
+                                        </strong>
+                                        <input
+                                            type="tel"
+                                            placeholder="Phone Number..."
+                                            onChange={this.phoneUpdated.bind(
+                                                this
+                                            )}
+                                            value={phone}
+                                        />
+                                    </GrayInput>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                        }}>
+                                        <Complete
+                                            onClick={this.completePayment.bind(
+                                                this
+                                            )}>
+                                            Complete
+                                        </Complete>
+                                        <Cancel
+                                            onClick={() =>
+                                                this.setState({ buying: false })
+                                            }>
+                                            Cancel
+                                        </Cancel>
+                                    </div>
+                                </GalleryFoot>
+                            )}
                         </GalleryItem>
                     )
                 })}
@@ -131,7 +222,7 @@ const Input = styled.div`
     padding: 10px 20px;
     border-radius: 38px;
     background-color: #ffffffee;
-    input[type="search"],
+    input,
     select {
         outline: none;
         border: none;
@@ -190,6 +281,7 @@ const GalleryItemContent = styled.div`
         }
         img {
             height: auto;
+            margin: 0;
         }
         h2 {
             top: 0;
@@ -209,6 +301,10 @@ const GalleryFoot = styled.div`
     }
 `
 
+const GrayInput = styled(Input)`
+    background-color: #eeeeee;
+`
+
 const Buy = styled.div`
     font-size: 22px;
     font-style: italic;
@@ -220,8 +316,18 @@ const Buy = styled.div`
     &:hover {
         background-color: ${colors.theme.red};
     }
-    padding: 16px;
+    padding: 10px 16px;
     border-radius: 38px;
     text-align: center;
     align-items: flex-end;
+`
+
+const Complete = styled(Buy)`
+    padding: 8px 16px;
+    align-self: center;
+`
+const Cancel = styled(Complete)`
+    background-color: #eeeeee;
+    color: ${colors.font.default};
+    margin-left: 10px;
 `
