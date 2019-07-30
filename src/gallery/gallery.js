@@ -1,112 +1,116 @@
-import React from "react"
+import React, { Component } from "react"
 import { BodyContainer } from "../components/containers"
 import styled from "styled-components"
-import { Link } from "react-router-dom"
 import images from "../images/gallery_files"
 import { colors } from "../constants"
 
-export default function Gallery() {
-    const categories = [
-        { label: "All", value: "" },
-        { label: "Drawing", value: "drawing" },
-        { label: "Pictures", value: "pictures" },
-        { label: "Jewellery", value: "jewels" },
-    ]
-    const sorting = [
-        { label: "Latest", value: "latest" },
-        { label: "Price Highest", value: "high" },
-        { label: "Price Lowest", value: "low" },
-        { label: "Oldest", value: "oldest" },
-    ]
-    const gallery = [
-        {
-            image: images.drawing,
-            type: "Drawing",
-            title: "Something something",
-            published: "Jun 20 2019",
-        },
-        {
-            image: images.photo,
-            type: "Photo",
-            title: "Something something",
-            published: "Jun 20 2019",
-        },
-        {
-            image: images.jewel,
-            type: "Jewellery",
-            title: "Something something",
-            published: "Jun 20 2019",
-        },
-        {
-            image: images.jewel2,
-            type: "Jewellery",
-            title: "Something something",
-            published: "Jun 20 2019",
-        },
-        {
-            image: images.photo2,
-            type: "Photo",
-            title: "Something something",
-            published: "Jun 20 2019",
-        },
-        {
-            image: images.drawing2,
-            type: "Drawing",
-            title: "Something something",
-            published: "Jun 20 2019",
-        },
-    ]
-    return (
-        <BodyContainer>
-            <HeaderContainer>
-                <Input>
-                    <i className="material-icons">search</i>
-                    <input type="search" placeholder="Search..." />
-                </Input>
-                <RightContainer>
+const sorting = [
+    { label: "Latest", value: "latest" },
+    { label: "Price Highest", value: "high" },
+    { label: "Price Lowest", value: "low" },
+    { label: "Oldest", value: "oldest" },
+]
+
+export default class Gallery extends Component {
+    constructor(props) {
+        super(props)
+        this.gallery = [
+            {
+                image: images.drawing,
+                type: "Drawing",
+                title: "Something something",
+                published: "Jun 20 2019",
+                amount: Math.round(Math.random() * 10) * 100,
+            },
+            {
+                image: images.photo,
+                type: "Photo",
+                title: "Something something",
+                published: "Jun 20 2019",
+                amount: Math.round(Math.random() * 10) * 100,
+            },
+            {
+                image: images.jewel,
+                type: "Jewellery",
+                title: "Something something",
+                published: "Jun 20 2019",
+                amount: Math.round(Math.random() * 10) * 100,
+            },
+            {
+                image: images.jewel2,
+                type: "Jewellery",
+                title: "Something something",
+                published: "Jun 20 2019",
+                amount: Math.round(Math.random() * 10) * 100,
+            },
+            {
+                image: images.photo2,
+                type: "Photo",
+                title: "Something something",
+                published: "Jun 20 2019",
+                amount: Math.round(Math.random() * 10) * 100,
+            },
+            {
+                image: images.drawing2,
+                type: "Drawing",
+                title: "Something something",
+                published: "Jun 20 2019",
+                amount: Math.round(Math.random() * 10) * 100,
+            },
+        ]
+    }
+
+    render() {
+        return (
+            <BodyContainer>
+                <HeaderContainer>
                     <Input>
-                        Sort
-                        <i className="material-icons">chevron_right</i>
-                        <select>
-                            {sorting.map(item => (
-                                <Option key={item.value} value={item.value}>
-                                    {item.label}
-                                </Option>
-                            ))}
-                        </select>
+                        <i className="material-icons">search</i>
+                        <input type="search" placeholder="Search..." />
                     </Input>
-                </RightContainer>
-            </HeaderContainer>
-            {gallery.map((item, index) => {
-                return (
-                    <GalleryItem key={item.image}>
-                        <GalleryItemContent
-                            className={index % 2 ? "even" : "odd"}>
-                            <img src={item.image} alt="" />
-                            <div>
-                                <h2>{item.title}</h2>
+                    <RightContainer>
+                        <Input>
+                            Sort
+                            <i className="material-icons">chevron_right</i>
+                            <select>
+                                {sorting.map(item => (
+                                    <Option key={item.value} value={item.value}>
+                                        {item.label}
+                                    </Option>
+                                ))}
+                            </select>
+                        </Input>
+                    </RightContainer>
+                </HeaderContainer>
+                {this.gallery.map((item, index) => {
+                    return (
+                        <GalleryItem key={item.image}>
+                            <GalleryItemContent
+                                className={index % 2 ? "even" : "odd"}>
+                                <img src={item.image} alt="" />
+                                <div>
+                                    <h2>{item.title}</h2>
+                                    <p>
+                                        Eiusmod et aliqua nisi duis laboris in
+                                        deserunt excepteur anim. Excepteur Lorem
+                                        labore proident dolore. Est commodo ex
+                                        veniam eiusmod enim commodo anim
+                                        consectetur qui ex do laboris
+                                    </p>
+                                </div>
+                            </GalleryItemContent>
+                            <GalleryFoot>
                                 <p>
-                                    Eiusmod et aliqua nisi duis laboris in
-                                    deserunt excepteur anim. Excepteur Lorem
-                                    labore proident dolore. Est commodo ex
-                                    veniam eiusmod enim commodo anim consectetur
-                                    qui ex do laboris
+                                    Published: <strong>{item.published}</strong>
                                 </p>
-                            </div>
-                        </GalleryItemContent>
-                        <GalleryFoot>
-                            <p>
-                                Published: <strong>{item.published}</strong>
-                            </p>
-                            <Buy to="">
-                                Buy @ {Math.round(Math.random() * 10) * 100}
-                            </Buy>
-                        </GalleryFoot>
-                    </GalleryItem>
-                )
-            })}
-        </BodyContainer>
-    )
+                                <Buy>Buy @ {item.amount || 100}</Buy>
+                            </GalleryFoot>
+                        </GalleryItem>
+                    )
+                })}
+            </BodyContainer>
+        )
+    }
 }
 
 const HeaderContainer = styled.div`
@@ -205,14 +209,19 @@ const GalleryFoot = styled.div`
     }
 `
 
-const Buy = styled(Link)`
+const Buy = styled.div`
     font-size: 22px;
     font-style: italic;
     text-decoration: none;
     font-weight: 700;
     color: #ffffff;
     background-color: ${colors.theme.teal};
+    cursor: pointer;
+    &:hover {
+        background-color: ${colors.theme.red};
+    }
     padding: 16px;
     border-radius: 38px;
+    text-align: center;
     align-items: flex-end;
 `
