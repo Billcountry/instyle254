@@ -7,6 +7,12 @@ export const colors = {
         teal: "#009688",
     },
     font: {
-        default: "#666666"
-    }
+        default: "#666666",
+    },
+}
+
+export const categories = {
+    canvas: "canvas",
+    pencil: "pencil",
+    skulpture: "skulptures",
 }
