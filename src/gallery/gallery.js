@@ -3,6 +3,7 @@ import { BodyContainer } from "../components/containers"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 import images from "../images/gallery_files"
+import { colors } from "../constants"
 
 export default function Gallery() {
     const categories = [
@@ -76,31 +77,31 @@ export default function Gallery() {
                     </Input>
                 </RightContainer>
             </HeaderContainer>
-            {gallery.map(item => {
+            {gallery.map((item, index) => {
                 return (
                     <GalleryItem key={item.image}>
-                        <img src={item.image} alt="" />
-                        <GalleryItemContent>
-                            <h2>{item.title}</h2>
-                            <p>
-                                Eiusmod et aliqua nisi duis laboris in deserunt
-                                excepteur anim. Excepteur Lorem labore proident
-                                dolore. Est commodo ex veniam eiusmod enim
-                                commodo anim consectetur qui ex do laboris
-                                labore. Aliqua esse duis labore incididunt
-                                aliqua ullamco dolor magna aliquip do nisi
-                                officia. Mollit anim excepteur commodo culpa
-                                incididunt laboris veniam anim nulla amet.
-                                Deserunt et adipisicing do pariatur consectetur
-                                ad mollit esse enim quis pariatur nostrud.
-                            </p>
-                            <GalleryFoot>
-                                <small>
-                                    Published: <strong>{item.published}</strong>
-                                </small>
-                                <Buy to="" />
-                            </GalleryFoot>
+                        <GalleryItemContent
+                            className={index % 2 ? "even" : "odd"}>
+                            <img src={item.image} alt="" />
+                            <div>
+                                <h2>{item.title}</h2>
+                                <p>
+                                    Eiusmod et aliqua nisi duis laboris in
+                                    deserunt excepteur anim. Excepteur Lorem
+                                    labore proident dolore. Est commodo ex
+                                    veniam eiusmod enim commodo anim consectetur
+                                    qui ex do laboris
+                                </p>
+                            </div>
                         </GalleryItemContent>
+                        <GalleryFoot>
+                            <p>
+                                Published: <strong>{item.published}</strong>
+                            </p>
+                            <Buy to="">
+                                Buy @ {Math.round(Math.random() * 10) * 100}
+                            </Buy>
+                        </GalleryFoot>
                     </GalleryItem>
                 )
             })}
@@ -148,22 +149,39 @@ const GalleryItem = styled.div`
     margin: 10px;
     background-color: #ffffffdd;
     padding: 20px;
-    img {
-        height: 300px;
-        width: auto;
-    }
-    :nth-child(2n) {
-        flex-direction: row-reverse;
-    }
+    flex-direction: column;
     h2 {
         line-height: 1em;
         margin-bottom: 0;
     }
     @media screen and (max-width: 800px) {
+        position: relative;
+    }
+`
+
+const GalleryItemContent = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-size: 22px;
+    text-align: justify;
+    line-height: 1.5em;
+    img {
+        height: 300px;
+        width: auto;
+        margin: 0 10px 0 0;
+    }
+    &.even {
+        flex-direction: row-reverse;
+        img {
+            margin: 0 0 0 10px;
+        }
+    }
+    @media screen and (max-width: 800px) {
         flex-direction: column;
         align-items: stretch;
-        position: relative;
-        :nth-child(2n) {
+        &.even {
             flex-direction: column;
         }
         img {
@@ -178,19 +196,10 @@ const GalleryItem = styled.div`
     }
 `
 
-const GalleryItemContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    font-size: 22px;
-    margin: 0 10px;
-    text-align: justify;
-    line-height: 1.5em;
-`
-
 const GalleryFoot = styled.div`
     display: flex;
     justify-content: space-between;
+    margin-top: 10px;
     @media screen and (max-width: 600px) {
         flex-direction: column;
     }
@@ -201,9 +210,9 @@ const Buy = styled(Link)`
     font-style: italic;
     text-decoration: none;
     font-weight: 700;
-    color: #444444;
-    border-bottom: 2px solid #444444;
-    ::before {
-        content: "View & Buy";
-    }
+    color: #ffffff;
+    background-color: ${colors.theme.teal};
+    padding: 16px;
+    border-radius: 38px;
+    align-items: flex-end;
 `
