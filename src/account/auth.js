@@ -14,6 +14,14 @@ export default class Auth extends Component {
             user: null, // User object from db
             g_user: this.firebase.auth.currentUser, // User object provided by googgle,
             login: true,
+            input: {
+                before_auth: {
+                    name: "",
+                    email: "",
+                    password: "",
+                    password_c: "",
+                },
+            },
         }
     }
 
@@ -41,9 +49,22 @@ export default class Auth extends Component {
         }
     }
 
+    before_auth_input(key, evt) {
+        const { input } = this.state
+        input.before_auth[key] = evt.target.value
+        this.setState({ input })
+    }
+
     render() {
         const { children } = this.props
-        const { user, request_data, login } = this.state
+        const {
+            user,
+            request_data,
+            login,
+            input: {
+                before_auth: { name, email, password, password_c },
+            },
+        } = this.state
         if (user && !request_data) return children
 
         return (
@@ -68,21 +89,53 @@ export default class Auth extends Component {
                     {!login && (
                         <GrayInput>
                             Name:{" "}
-                            <input type="text" placeholder="full name..." />
+                            <input
+                                type="text"
+                                placeholder="full name..."
+                                value={name}
+                                onChange={this.before_auth_input.bind(
+                                    this,
+                                    "name"
+                                )}
+                            />
                         </GrayInput>
                     )}
                     <GrayInput>
                         Email:{" "}
-                        <input type="email" placeholder="email address..." />
+                        <input
+                            type="email"
+                            placeholder="email address..."
+                            value={email}
+                            onChange={this.before_auth_input.bind(
+                                this,
+                                "email"
+                            )}
+                        />
                     </GrayInput>
                     <GrayInput>
                         Password:{" "}
-                        <input type="password" placeholder="password..." />
+                        <input
+                            type="password"
+                            placeholder="password..."
+                            value={password}
+                            onChange={this.before_auth_input.bind(
+                                this,
+                                "password"
+                            )}
+                        />
                     </GrayInput>
                     {!login && (
                         <GrayInput>
                             Confirm Password:{" "}
-                            <input type="password" placeholder="password..." />
+                            <input
+                                type="password"
+                                placeholder="password..."
+                                value={password_c}
+                                onChange={this.before_auth_input.bind(
+                                    this,
+                                    "password_c"
+                                )}
+                            />
                         </GrayInput>
                     )}
                 </Container>
