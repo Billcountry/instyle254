@@ -67,28 +67,22 @@ export default class Auth extends Component {
                     </Tabs>
                     {!login && (
                         <GrayInput>
-                            Full Name:{" "}
-                            <input
-                                type="email"
-                                placeholder="your email here..."
-                            />
+                            Name:{" "}
+                            <input type="text" placeholder="full name..." />
                         </GrayInput>
                     )}
                     <GrayInput>
                         Email:{" "}
-                        <input type="email" placeholder="your email here..." />
+                        <input type="email" placeholder="email address..." />
                     </GrayInput>
                     <GrayInput>
                         Password:{" "}
-                        <input type="password" placeholder="your password..." />
+                        <input type="password" placeholder="password..." />
                     </GrayInput>
                     {!login && (
                         <GrayInput>
                             Confirm Password:{" "}
-                            <input
-                                type="password"
-                                placeholder="your password..."
-                            />
+                            <input type="password" placeholder="password..." />
                         </GrayInput>
                     )}
                 </Container>
