@@ -1,7 +1,9 @@
 import React, { Component } from "react"
 import Firebase, { db } from "firebase-orient"
 import { User } from "../models"
-import { Input, BodyContainer } from "../components/containers"
+import { GrayInput, BodyContainer } from "../components/containers"
+import styled from "styled-components"
+import { colors } from "../constants"
 
 export default class Auth extends Component {
     constructor(props) {
@@ -10,7 +12,8 @@ export default class Auth extends Component {
 
         this.state = {
             user: null, // User object from db
-            g_user: this.firebase.auth.currentUser, // User object provided by googgle
+            g_user: this.firebase.auth.currentUser, // User object provided by googgle,
+            login: true,
         }
     }
 
@@ -40,9 +43,85 @@ export default class Auth extends Component {
 
     render() {
         const { children } = this.props
-        const { user, request_data } = this.state
+        const { user, request_data, login } = this.state
         if (user && !request_data) return children
 
-        return <BodyContainer></BodyContainer>
+        return (
+            <BodyContainer>
+                <Container>
+                    <Tabs>
+                        <Tab
+                            onClick={() => {
+                                this.setState({ login: true })
+                            }}
+                            className={login ? "active" : ""}>
+                            Login
+                        </Tab>
+                        <Tab
+                            onClick={() => {
+                                this.setState({ login: false })
+                            }}
+                            className={login ? "" : "active"}>
+                            Register
+                        </Tab>
+                    </Tabs>
+                    {!login && (
+                        <GrayInput>
+                            Full Name:{" "}
+                            <input
+                                type="email"
+                                placeholder="your email here..."
+                            />
+                        </GrayInput>
+                    )}
+                    <GrayInput>
+                        Email:{" "}
+                        <input type="email" placeholder="your email here..." />
+                    </GrayInput>
+                    <GrayInput>
+                        Password:{" "}
+                        <input type="password" placeholder="your password..." />
+                    </GrayInput>
+                    {!login && (
+                        <GrayInput>
+                            Confirm Password:{" "}
+                            <input
+                                type="password"
+                                placeholder="your password..."
+                            />
+                        </GrayInput>
+                    )}
+                </Container>
+            </BodyContainer>
+        )
     }
 }
+
+const Tabs = styled.div`
+    display: flex;
+    margin: 0;
+    border-bottom: 1px solid ${colors.theme.teal};
+`
+
+const Tab = styled.div`
+    cursor: pointer;
+    padding: 10px 0;
+    text-align: center;
+    width: 50%;
+    &:hover,
+    &.active {
+        border-bottom: 1px solid ${colors.theme.teal};
+        color: ${colors.theme.teal};
+    }
+`
+
+const Container = styled.div`
+    width: 800px;
+    background-color: #ffffff;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    @media screen and (max-width: 800px) {
+        width: 100%;
+    }
+`
