@@ -2,9 +2,10 @@ import React, { Component } from "react"
 import Firebase, { db } from "firebase-orient"
 import { User } from "../models"
 import { GrayInput, BodyContainer, Container } from "../components/containers"
-import { Button } from "../components/buttons"
+import { Button, LightButton } from "../components/buttons"
 import styled from "styled-components"
 import { colors } from "../constants"
+import googgle from "../images/google.png"
 
 export default class Auth extends Component {
     constructor(props) {
@@ -71,10 +72,19 @@ export default class Auth extends Component {
         return (
             <BodyContainer>
                 <Container>
-                    <Button style={{ alignSelf: "center" }}>
+                    <LightButton style={{ alignSelf: "center", marginTop: 20 }}>
+                        <img
+                            src={googgle}
+                            style={{
+                                height: "20px",
+                                width: "auto",
+                                marginRight: 5,
+                            }}
+                            alt=""
+                        />
                         Continue with google
-                    </Button>
-                    <h2>Or</h2>
+                    </LightButton>
+                    <h2 style={{ textAlign: "center" }}>Or</h2>
                     <Tabs>
                         <Tab
                             onClick={() => {
