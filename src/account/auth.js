@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import Firebase, { db } from "firebase-orient"
 import { User } from "../models"
 import { GrayInput, BodyContainer, Container } from "../components/containers"
+import { Button } from "../components/buttons"
 import styled from "styled-components"
 import { colors } from "../constants"
 
@@ -70,6 +71,10 @@ export default class Auth extends Component {
         return (
             <BodyContainer>
                 <Container>
+                    <Button style={{ alignSelf: "center" }}>
+                        Continue with google
+                    </Button>
+                    <h2>Or</h2>
                     <Tabs>
                         <Tab
                             onClick={() => {
@@ -138,6 +143,9 @@ export default class Auth extends Component {
                             />
                         </GrayInput>
                     )}
+                    <Button style={{ alignSelf: "center" }}>
+                        {login ? "Login" : "Register"}
+                    </Button>
                 </Container>
             </BodyContainer>
         )
