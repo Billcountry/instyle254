@@ -22,7 +22,18 @@ export const Input = styled.div`
         font-size: 14px;
         margin-left: 5px;
         flex-grow: 1;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #eeeeee;
     }
     margin: 10px;
     flex-grow: 1;
+`
+
+export const GrayInput = styled(Input)`
+    background-color: #f1f1f199;
+    input,
+    select {
+        padding-bottom: 5px;
+        border-bottom: 1px solid #cccccc;
+    }
 `
