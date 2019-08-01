@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import Firebase, { db } from "firebase-orient"
 import { User } from "../models"
+import { Input, BodyContainer } from "../components/containers"
 
 export default class Auth extends Component {
     constructor(props) {
@@ -41,5 +42,7 @@ export default class Auth extends Component {
         const { children } = this.props
         const { user, request_data } = this.state
         if (user && !request_data) return children
+
+        return <BodyContainer></BodyContainer>
     }
 }
