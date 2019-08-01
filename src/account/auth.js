@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import Firebase, { db } from "firebase-orient"
 import { User } from "../models"
-import { GrayInput, BodyContainer } from "../components/containers"
+import { GrayInput, BodyContainer, Container } from "../components/containers"
 import styled from "styled-components"
 import { colors } from "../constants"
 
@@ -159,16 +159,5 @@ const Tab = styled.div`
     &.active {
         border-bottom: 1px solid ${colors.theme.teal};
         color: ${colors.theme.teal};
-    }
-`
-
-const Container = styled.div`
-    width: 800px;
-    background-color: #ffffff;
-    align-self: center;
-    display: flex;
-    flex-direction: column;
-    @media screen and (max-width: 800px) {
-        width: 100%;
     }
 `

@@ -1,11 +1,24 @@
 import styled from "styled-components"
 
+// A container trying not to occupy too much space
 export const BodyContainer = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 10px;
     @media screen and (min-width: 1200px) {
         margin: auto calc((100vw - 1200px) / 2) !important;
+    }
+`
+
+// Small width centered container
+export const Container = styled.div`
+    width: 800px;
+    background-color: #ffffff;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    @media screen and (max-width: 800px) {
+        width: 100%;
     }
 `
 
