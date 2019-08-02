@@ -33,9 +33,20 @@ export default class Auth extends Component {
     componentDidMount() {
         this.firebase.auth_state(g_user => {
             if (g_user) {
-                db.get(g_user.uid, User).then(user => {
-                    this.setState({ user, g_user })
-                })
+                db.get(g_user.uid, User)
+                    .then(user => {
+                        this.setState({ user, g_user })
+                    })
+                    .catch(error => {
+                        // User does not exist probably
+                        const user = new User(
+                            g_user.displayName || null,
+                            g_user.email,
+                            g_user.uid
+                        )
+                        user.put()
+                        this.setState({ user, g_user })
+                    })
             } else {
                 this.setState({ user: null, g_user: null })
             }
@@ -83,14 +94,13 @@ export default class Auth extends Component {
         const { children } = this.props
         const {
             user,
-            request_data,
             login,
             input: {
                 before_auth: { name, email, password, password_c },
             },
             loading,
         } = this.state
-        if (user && !request_data) return children
+        if (user) return children
 
         if (loading)
             return (
