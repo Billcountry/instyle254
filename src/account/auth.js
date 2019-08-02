@@ -6,6 +6,8 @@ import { Button, LightButton } from "../components/buttons"
 import styled from "styled-components"
 import { colors } from "../constants"
 import googgle from "../images/google.png"
+import { Loader } from "../components/loaders"
+import toastr from "toastr"
 
 export default class Auth extends Component {
     constructor(props) {
@@ -24,6 +26,7 @@ export default class Auth extends Component {
                     password_c: "",
                 },
             },
+            loading: null,
         }
     }
 
@@ -57,6 +60,25 @@ export default class Auth extends Component {
         this.setState({ input })
     }
 
+    google_login() {
+        this.setState({ loading: "Waiting..." }, () => {
+            this.firebase
+                .auth_google_login()
+                .then(g_user => {
+                    this.setState({ loading: null })
+                    if (g_user) {
+                        toastr.success("Login successful")
+                    } else {
+                        toastr.error("Login failed")
+                    }
+                })
+                .catch(error => {
+                    toastr.error(error)
+                    this.setState({ loading: null })
+                })
+        })
+    }
+
     render() {
         const { children } = this.props
         const {
@@ -66,13 +88,23 @@ export default class Auth extends Component {
             input: {
                 before_auth: { name, email, password, password_c },
             },
+            loading,
         } = this.state
         if (user && !request_data) return children
+
+        if (loading)
+            return (
+                <BodyContainer>
+                    <Loader>{loading}</Loader>
+                </BodyContainer>
+            )
 
         return (
             <BodyContainer>
                 <Container>
-                    <LightButton style={{ alignSelf: "center", marginTop: 20 }}>
+                    <LightButton
+                        onClick={this.google_login.bind(this)}
+                        style={{ alignSelf: "center", marginTop: 20 }}>
                         <img
                             src={googgle}
                             style={{
@@ -173,7 +205,9 @@ const Tab = styled.div`
     padding: 10px 0;
     text-align: center;
     width: 50%;
-    &:hover,
+    &:hover {
+        color: ${colors.theme.orange};
+    }
     &.active {
         border-bottom: 1px solid ${colors.theme.teal};
         color: ${colors.theme.teal};
