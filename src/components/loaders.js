@@ -6,26 +6,6 @@ import { random_colour } from "../tools"
 export class Loader extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            circles: [
-                { left: 0, top: 0, colour: null },
-                { left: 0, top: 50, colour: null },
-                { left: 0, top: 100, colour: null },
-                { left: 0, top: 150, colour: null },
-                { left: 0, top: 200, colour: null },
-                { left: 50, top: 200, colour: null },
-                { left: 100, top: 200, colour: null },
-                { left: 150, top: 200, colour: null },
-                { left: 200, top: 200, colour: null },
-                { left: 200, top: 150, colour: null },
-                { left: 200, top: 100, colour: null },
-                { left: 200, top: 50, colour: null },
-                { left: 200, top: 0, colour: null },
-                { left: 150, top: 0, colour: null },
-                { left: 100, top: 0, colour: null },
-                { left: 50, top: 0, colour: null },
-            ],
-        }
 
         this.linear = [
             random_colour(),
@@ -44,6 +24,27 @@ export class Loader extends Component {
             random_colour(),
             random_colour(),
         ]
+
+        this.state = {
+            circles: [
+                { left: 0, top: 0, colour: this.linear[0] },
+                { left: 0, top: 50, colour: this.linear[1] },
+                { left: 0, top: 100, colour: this.linear[2] },
+                { left: 0, top: 150, colour: this.linear[3] },
+                { left: 0, top: 200, colour: this.linear[4] },
+                { left: 50, top: 200, colour: this.linear[5] },
+                { left: 100, top: 200, colour: this.linear[6] },
+                { left: 150, top: 200, colour: this.linear[7] },
+                { left: 200, top: 200, colour: this.linear[8] },
+                { left: 200, top: 150, colour: this.linear[9] },
+                { left: 200, top: 100, colour: this.linear[10] },
+                { left: 200, top: 50, colour: this.linear[11] },
+                { left: 200, top: 0, colour: this.linear[12] },
+                { left: 150, top: 0, colour: this.linear[13] },
+                { left: 100, top: 0, colour: this.linear[14] },
+                { left: 50, top: 0, colour: this.linear[15] },
+            ],
+        }
     }
     componentDidMount() {
         setInterval(
