@@ -3,6 +3,8 @@ import Auth from "../account/auth"
 import Firebase from "firebase-orient"
 import { BodyContainer, Container, GrayInput } from "../components/containers"
 import { colors } from "../constants"
+import styled from "styled-components"
+import { Button } from "../components/buttons"
 
 export default class Admin extends Component {
     constructor(props) {
@@ -12,7 +14,8 @@ export default class Admin extends Component {
             admins: {},
             user: null,
             data: {},
-            meta_data: {},
+            meta_data: [],
+            images: [],
         }
         this.firebase = new Firebase()
     }
@@ -41,8 +44,25 @@ export default class Admin extends Component {
         }
     }
 
+    onImageUpload(event) {
+        const files = event.target.files
+        console.log(files)
+    }
+
+    addMetaData() {
+        let { meta_data } = this.state
+        meta_data.push({ key: "", value: "" })
+        this.setState({ meta_data })
+    }
+
+    updateMetaData(index, key, event) {
+        let { meta_data } = this.state
+        meta_data[index][key] = event.target.value
+        this.setState({ meta_data })
+    }
+
     render() {
-        const { data, meta_data } = this.state
+        const { data, meta_data, images } = this.state
         return (
             <Auth>
                 <BodyContainer>
@@ -69,22 +89,66 @@ export default class Admin extends Component {
 
                         <GrayInput>
                             Image <small>(Choose one or multiple images)</small>
-                            <input type="file" placeholder="description..." />
+                            <input
+                                onChange={this.onImageUpload.bind(this)}
+                                type="file"
+                                multiple
+                                accept="image/*"
+                            />
                         </GrayInput>
                         <h4 style={{ textAlign: "center", marginBottom: 5 }}>
                             Other details
                         </h4>
                         <span style={{ textAlign: "center" }}>
                             ( Extra details about the art such as size, style
-                            e.t.c )
+                            e.t.c,{" "}
+                            <StyledSpan onClick={this.addMetaData.bind(this)} />{" "}
+                            )
                         </span>
-                        <GrayInput>
-                            <input type="text" placeholder="Detail..." /> :
-                            <input type="text" placeholder="Value..." />
-                        </GrayInput>
+                        {meta_data.map((meta_item, index) => (
+                            <GrayInput key={index}>
+                                <input
+                                    type="text"
+                                    onChange={this.updateMetaData.bind(
+                                        this,
+                                        index,
+                                        "key"
+                                    )}
+                                    value={meta_item.key}
+                                    placeholder="Detail..."
+                                />{" "}
+                                :
+                                <input
+                                    type="text"
+                                    onChange={this.updateMetaData.bind(
+                                        this,
+                                        index,
+                                        "value"
+                                    )}
+                                    value={meta_item.value}
+                                    placeholder="Value..."
+                                />
+                            </GrayInput>
+                        ))}
+
+                        <Button style={{ alignSelf: "center" }}>
+                            Publish Item
+                        </Button>
                     </Container>
                 </BodyContainer>
             </Auth>
         )
     }
 }
+
+const StyledSpan = styled.span`
+    color: ${colors.theme.teal};
+    text-decoration: underline;
+    cursor: pointer;
+    &:hover {
+        color: ${colors.theme.orange};
+    }
+    &::before {
+        content: "Click here to add";
+    }
+`
