@@ -5,6 +5,7 @@ import { BodyContainer, Container, GrayInput } from "../components/containers"
 import { colors } from "../constants"
 import styled from "styled-components"
 import { Button } from "../components/buttons"
+import toastr from "toastr"
 
 export default class Admin extends Component {
     constructor(props) {
@@ -14,7 +15,7 @@ export default class Admin extends Component {
             admins: {},
             user: null,
             data: {},
-            meta_data: [],
+            meta_data: [{ key: "", value: "" }],
             images: [],
         }
         this.firebase = new Firebase()
@@ -51,6 +52,9 @@ export default class Admin extends Component {
 
     addMetaData() {
         let { meta_data } = this.state
+        if (meta_data.length >= 5) {
+            return toastr.warning("A maximum of 5 properties are allowed")
+        }
         meta_data.push({ key: "", value: "" })
         this.setState({ meta_data })
     }
@@ -58,6 +62,12 @@ export default class Admin extends Component {
     updateMetaData(index, key, event) {
         let { meta_data } = this.state
         meta_data[index][key] = event.target.value
+        this.setState({ meta_data })
+    }
+
+    removeMetadata(index) {
+        let { meta_data } = this.state
+        meta_data.splice(index, 1)
         this.setState({ meta_data })
     }
 
@@ -87,15 +97,17 @@ export default class Admin extends Component {
                             <textarea placeholder="description..." />
                         </GrayInput>
 
-                        <GrayInput>
-                            Image <small>(Choose one or multiple images)</small>
-                            <input
-                                onChange={this.onImageUpload.bind(this)}
-                                type="file"
-                                multiple
-                                accept="image/*"
-                            />
-                        </GrayInput>
+                        <ImageContainer>
+                            <ImageInput>
+                                Select image/Images
+                                <input
+                                    onChange={this.onImageUpload.bind(this)}
+                                    type="file"
+                                    multiple
+                                    accept="image/*"
+                                />
+                            </ImageInput>
+                        </ImageContainer>
                         <h4 style={{ textAlign: "center", marginBottom: 5 }}>
                             Other details
                         </h4>
@@ -128,6 +140,14 @@ export default class Admin extends Component {
                                     value={meta_item.value}
                                     placeholder="Value..."
                                 />
+                                <Close
+                                    onClick={this.removeMetadata.bind(
+                                        this,
+                                        index
+                                    )}
+                                    className="material-icons">
+                                    close
+                                </Close>
                             </GrayInput>
                         ))}
 
@@ -150,5 +170,34 @@ const StyledSpan = styled.span`
     }
     &::before {
         content: "Click here to add";
+    }
+`
+
+const ImageContainer = styled(GrayInput)`
+    flex-direction: column;
+`
+
+const ImageInput = styled.label`
+    display: flex;
+    justify-content: center;
+    input {
+        display: none;
+    }
+    border-bottom: 1px solid #cccccc;
+    padding: 5px;
+    cursor: pointer;
+    :hover {
+        border-bottom: 2px solid ${colors.theme.teal};
+    }
+`
+
+const Close = styled.i`
+    cursor: pointer;
+    margin: 5px;
+    padding: 2px;
+    border-radius: 50%;
+    :hover {
+        background-color: #f002;
+        color: #f00;
     }
 `
