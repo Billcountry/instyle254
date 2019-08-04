@@ -40,7 +40,9 @@ export default class Auth extends Component {
                     .catch(error => {
                         // User does not exist probably
                         const user = new User(
-                            g_user.displayName || null,
+                            g_user.displayName ||
+                                this.state.input.before_auth.name ||
+                                null,
                             g_user.email,
                             g_user.uid
                         )
@@ -129,11 +131,11 @@ export default class Auth extends Component {
                 user.sendEmailVerification().then(() => {
                     toastr.success("Check inbox to confirm your email address")
                 })
-                toastr.success("Registration successful, logging in")
-                this.setState({ login: true }, this.email_password.bind(this))
+                toastr.success("Registration successful")
+                this.setState({ loading: null })
             })
             .catch(error => {
-                toastr.error(error, "Error")
+                toastr.error(error.message || error, "Error")
                 this.setState({ loading: null })
             })
     }
