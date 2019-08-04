@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { BodyContainer } from "../components/containers"
+import { BodyContainer, Input } from "../components/containers"
 import styled from "styled-components"
 import images from "../images/gallery_files"
 import { colors } from "../constants"
@@ -215,24 +215,6 @@ const HeaderContainer = styled.div`
 
 const RightContainer = styled.div`
     display: flex;
-`
-
-const Input = styled.div`
-    display: flex;
-    padding: 10px 20px;
-    border-radius: 38px;
-    background-color: #ffffffee;
-    input,
-    select {
-        outline: none;
-        border: none;
-        background-color: transparent;
-        font-size: 14px;
-        margin-left: 5px;
-        flex-grow: 1;
-    }
-    margin: 10px;
-    flex-grow: 1;
 `
 
 const Option = styled.option`

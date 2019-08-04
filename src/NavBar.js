@@ -3,7 +3,6 @@ import styled from "styled-components"
 import logo from "./images/logo.png"
 import { fonts, colors } from "./constants"
 import { NavLink, Link } from "react-router-dom"
-import { bool } from "prop-types"
 
 export default function NavBar(props) {
     const menu = [
