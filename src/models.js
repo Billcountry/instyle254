@@ -15,3 +15,22 @@ export class User extends db.Model {
         this.user_id = user_id
     }
 }
+
+export class Gallery extends db.Model {
+    constructor(title, price, description, quantity, meta_data) {
+        super({
+            title: db.stringField(),
+            price: db.numberField(),
+            description: db.stringField(),
+            quantity: db.numberField({ default: 1000001 }),
+            meta_data: db.objectField(),
+            published: db.datetimeField({ default: db.currentTimestamp }),
+        })
+
+        this.title = title
+        this.price = price
+        this.description = description
+        this.quantity = quantity
+        this.meta_data = meta_data
+    }
+}
