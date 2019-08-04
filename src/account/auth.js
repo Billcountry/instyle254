@@ -26,7 +26,7 @@ export default class Auth extends Component {
                     password_c: "",
                 },
             },
-            loading: null,
+            loading: "Loading...",
         }
     }
 
@@ -35,7 +35,7 @@ export default class Auth extends Component {
             if (g_user) {
                 db.get(g_user.uid, User)
                     .then(user => {
-                        this.setState({ user, g_user })
+                        this.setState({ user, g_user, loading: null })
                     })
                     .catch(error => {
                         // User does not exist probably
@@ -47,10 +47,10 @@ export default class Auth extends Component {
                             g_user.uid
                         )
                         user.put()
-                        this.setState({ user, g_user })
+                        this.setState({ user, g_user, loading: null })
                     })
             } else {
-                this.setState({ user: null, g_user: null })
+                this.setState({ user: null, g_user: null, loading: null })
             }
         })
     }
