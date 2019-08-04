@@ -28,6 +28,7 @@ export const Input = styled.div`
     border-radius: 38px;
     background-color: #ffffffee;
     input,
+    textarea,
     select {
         outline: none;
         border: none;
@@ -45,6 +46,7 @@ export const Input = styled.div`
 export const GrayInput = styled(Input)`
     background-color: #f1f1f199;
     input,
+    textarea,
     select {
         padding-bottom: 5px;
         border-bottom: 1px solid #cccccc;
