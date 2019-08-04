@@ -4,7 +4,7 @@ import "./index.css"
 import { setUp } from "firebase-orient"
 import App from "./App"
 import * as serviceWorker from "./serviceWorker"
-import {GOOGLE_AUTH} from "./secrets"
+import { GOOGLE_AUTH } from "./secrets"
 setUp({
     appID: GOOGLE_AUTH.APP_ID,
     apiKey: GOOGLE_AUTH.API_KEY,
