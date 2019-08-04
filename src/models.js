@@ -25,6 +25,7 @@ export class Gallery extends db.Model {
             quantity: db.numberField({ default: 1000001 }),
             meta_data: db.objectField(),
             published: db.datetimeField({ default: db.currentTimestamp }),
+            images: db.listField(db.stringField()),
         })
 
         this.title = title
