@@ -90,6 +90,54 @@ export default class Auth extends Component {
         })
     }
 
+    email_password() {
+        const {
+            login,
+            input: {
+                before_auth: { name, email, password, password_c },
+            },
+        } = this.state
+        if (!email) {
+            return toastr.error("Email is required")
+        }
+        if (!password) {
+            return toastr.error("Password is required")
+        }
+        if (!password_c && !login) {
+            return toastr.error("Confirm password before registration")
+        } else if (!login && password_c !== password) {
+            return toastr.error("Passwords must match")
+        }
+        if (!name && !login) {
+            return toastr.error("Name is required")
+        }
+        this.setState({
+            loading: login ? "Logging in..." : "Creating user...",
+        })
+
+        const promise = login
+            ? this.firebase.auth_email_signin(email, password)
+            : this.firebase.auth_email_register(email, password)
+
+        promise
+            .then(user => {
+                if (login) {
+                    this.setState({ loading: null })
+                    return toastr.success("Login successful")
+                }
+                user.updateProfile({ displayName: name })
+                user.sendEmailVerification().then(() => {
+                    toastr.success("Check inbox to confirm your email address")
+                })
+                toastr.success("Registration successful, logging in")
+                this.setState({ login: true }, this.email_password.bind(this))
+            })
+            .catch(error => {
+                toastr.error(error, "Error")
+                this.setState({ loading: null })
+            })
+    }
+
     render() {
         const { children } = this.props
         const {
@@ -195,7 +243,9 @@ export default class Auth extends Component {
                             />
                         </GrayInput>
                     )}
-                    <Button style={{ alignSelf: "center" }}>
+                    <Button
+                        style={{ alignSelf: "center" }}
+                        onClick={this.email_password.bind(this)}>
                         {login ? "Login" : "Register"}
                     </Button>
                 </Container>
