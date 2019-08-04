@@ -9,8 +9,8 @@ import { GOOGLE_AUTH } from "./secrets"
 import toastr from "toastr"
 
 toastr.options.progressBar = true
-toastr.options.positionClass = "toast-bottom-left"
-toastr.options.timeOut = 12000
+toastr.options.positionClass = "toast-bottom-center"
+toastr.options.timeOut = 8000
 
 setUp({
     appID: GOOGLE_AUTH.APP_ID,
