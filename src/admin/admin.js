@@ -14,9 +14,9 @@ export default class Admin extends Component {
             is_admin: false,
             admins: {},
             user: null,
-            data: {},
+            data: { title: "", price: "", description: "" },
             meta_data: [{ key: "", value: "" }],
-            images: [],
+            images: {},
         }
         this.firebase = new Firebase()
     }
@@ -45,9 +45,22 @@ export default class Admin extends Component {
         }
     }
 
+    updateData(key, event) {
+        let { data } = this.state
+        data[key] = event.target.value
+        this.setState({ data })
+    }
+
+    updateDownload(task_id, downloadUrl, progress) {
+        let { images } = this.state
+        if (downloadUrl) images[task_id].downloadUrl = downloadUrl
+        if (progress) images[task_id].progress = progress
+        this.setState({ images })
+    }
+
     onImageUpload(event) {
         const files = event.target.files
-        const { images } = this.state
+        let { images } = this.state
         for (let i = 0; i < files.length; i++) {
             const file = files[i]
             const task_id = `img_${i}_${new Date().getTime()}`
@@ -56,19 +69,23 @@ export default class Admin extends Component {
                 file,
                 task_id,
                 {
-                    complete: (task_id, downloadUrl) => {
-                        console.log(downloadUrl)
-                    },
-                    progress: (task_id, progress) => {
-                        console.log(progress)
-                    },
+                    complete: this.updateDownload.bind(this),
                     error: (task_id, err) => {
                         toastr.error(err.message || err)
+                        this.updateDownload(task_id, null, "Error")
+                    },
+                    progress: (task_id, progress) => {
+                        this.updateDownload(task_id, null, progress)
                     },
                 }
             )
-            images.push({ task_id, name: file.name })
+            images[task_id] = {
+                name: file.name,
+                downloadUrl: null,
+                progress: 0,
+            }
         }
+        this.setState({ images })
     }
 
     addMetaData() {
@@ -93,7 +110,11 @@ export default class Admin extends Component {
     }
 
     render() {
-        const { data, meta_data, images } = this.state
+        const {
+            data: { title, price, description },
+            meta_data,
+            images,
+        } = this.state
         return (
             <Auth>
                 <BodyContainer>
@@ -106,16 +127,30 @@ export default class Admin extends Component {
                             Title
                             <input
                                 type="text"
+                                value={title}
+                                onChange={this.updateData.bind(this, "title")}
                                 placeholder="art name/title..."
                             />
                         </GrayInput>
                         <GrayInput>
                             Price(Ksh)
-                            <input type="number" placeholder="cost..." />
+                            <input
+                                type="number"
+                                placeholder="cost..."
+                                value={price}
+                                onChange={this.updateData.bind(this, "price")}
+                            />
                         </GrayInput>
                         <GrayInput>
                             Description
-                            <textarea placeholder="description..." />
+                            <textarea
+                                placeholder="description..."
+                                value={description}
+                                onChange={this.updateData.bind(
+                                    this,
+                                    "description"
+                                )}
+                            />
                         </GrayInput>
 
                         <ImageContainer>
@@ -128,6 +163,24 @@ export default class Admin extends Component {
                                     accept="image/*"
                                 />
                             </ImageInput>
+                            {Object.keys(images).map(task_id => {
+                                const { downloadUrl, name, progress } = images[
+                                    task_id
+                                ]
+                                return (
+                                    <ImageDisplay key={task_id}>
+                                        <span>{name}</span>
+                                        {!!downloadUrl && (
+                                            <img src={downloadUrl} alt="" />
+                                        )}
+                                        {!downloadUrl && (
+                                            <span>
+                                                Uploading... {progress}%
+                                            </span>
+                                        )}
+                                    </ImageDisplay>
+                                )
+                            })}
                         </ImageContainer>
                         <h4 style={{ textAlign: "center", marginBottom: 5 }}>
                             Other details
@@ -226,15 +279,18 @@ const Close = styled.i`
 const ImageDisplay = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     img {
-        height: 400px;
+        height: 200px;
         width: auto;
     }
 
     @media screen and (max-width: 600px) {
         flex-direction: column-reverse;
-        img: {
-            height: auto;
-        }
+        align-items: center;
     }
+    margin: 5px;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 10px;
 `
