@@ -6,6 +6,7 @@ import { colors } from "../constants"
 import styled from "styled-components"
 import { Button } from "../components/buttons"
 import toastr from "toastr"
+import { Gallery } from "../models"
 
 export default class Admin extends Component {
     constructor(props) {
@@ -17,6 +18,7 @@ export default class Admin extends Component {
             data: { title: "", price: "", description: "" },
             meta_data: [{ key: "", value: "" }],
             images: {},
+            publishing: false,
         }
         this.firebase = new Firebase()
     }
@@ -109,11 +111,73 @@ export default class Admin extends Component {
         this.setState({ meta_data })
     }
 
+    publishItem() {
+        this.setState({ publishing: true })
+        let {
+            images,
+            meta_data,
+            data: { title, price, description },
+        } = this.state
+
+        if (!title || !price) {
+            return toastr.error("Title and price required")
+        }
+
+        for (let task_id in images) {
+            if (images[task_id].progress === "Error") {
+                delete images[task_id]
+                continue
+            }
+            if (images[task_id].progress < 100) {
+                return toastr.warning(
+                    "Wait for all images to finish uploading..."
+                )
+            }
+        }
+
+        if (!Object.keys(images).length) {
+            return toastr.error("At least one image is needed per item")
+        }
+
+        let db_meta = {}
+        meta_data.forEach(({ key, value }) => {
+            if (key && value) {
+                db_meta[key] = value
+            }
+        })
+
+        const gallery = new Gallery(
+            title,
+            price,
+            description,
+            10000000,
+            db_meta,
+            images
+        )
+        gallery
+            .put()
+            .then(() => {
+                toastr.success(`${title} published successfully`)
+                this.setState({
+                    publishing: false,
+                    data: { title: "", price: "", description: "" },
+                    meta_data: [{ key: "", value: "" }],
+                    images: {},
+                })
+            })
+            .catch(error => {
+                toastr.error("An error occured, please retry")
+                toastr.error(error.message || error)
+                this.setState({ publishing: false })
+            })
+    }
+
     render() {
         const {
             data: { title, price, description },
             meta_data,
             images,
+            publishing,
         } = this.state
         return (
             <Auth>
@@ -225,8 +289,14 @@ export default class Admin extends Component {
                             </GrayInput>
                         ))}
 
-                        <Button style={{ alignSelf: "center" }}>
-                            Publish Item
+                        <Button
+                            style={{ alignSelf: "center" }}
+                            onClick={
+                                publishing
+                                    ? undefined
+                                    : this.publishItem.bind(this)
+                            }>
+                            {publishing ? "Publishing..." : "Publish Item"}
                         </Button>
                     </Container>
                 </BodyContainer>
