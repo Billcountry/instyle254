@@ -17,7 +17,7 @@ export class User extends db.Model {
 }
 
 export class Gallery extends db.Model {
-    constructor(title, price, description, quantity, meta_data) {
+    constructor(title, price, description, quantity, meta_data, images) {
         super({
             title: db.stringField(),
             price: db.numberField(),
@@ -33,5 +33,6 @@ export class Gallery extends db.Model {
         this.description = description
         this.quantity = quantity
         this.meta_data = meta_data
+        this.images = images
     }
 }
