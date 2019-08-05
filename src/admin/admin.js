@@ -47,7 +47,28 @@ export default class Admin extends Component {
 
     onImageUpload(event) {
         const files = event.target.files
-        console.log(files)
+        const { images } = this.state
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i]
+            const task_id = `img_${i}_${new Date().getTime()}`
+            this.firebase.upload(
+                `/gallery/${task_id}_${file.name}`,
+                file,
+                task_id,
+                {
+                    complete: (task_id, downloadUrl) => {
+                        console.log(downloadUrl)
+                    },
+                    progress: (task_id, progress) => {
+                        console.log(progress)
+                    },
+                    error: (task_id, err) => {
+                        toastr.error(err.message || err)
+                    },
+                }
+            )
+            images.push({ task_id, name: file.name })
+        }
     }
 
     addMetaData() {
@@ -199,5 +220,21 @@ const Close = styled.i`
     :hover {
         background-color: #f002;
         color: #f00;
+    }
+`
+
+const ImageDisplay = styled.div`
+    display: flex;
+    justify-content: space-between;
+    img {
+        height: 400px;
+        width: auto;
+    }
+
+    @media screen and (max-width: 600px) {
+        flex-direction: column-reverse;
+        img: {
+            height: auto;
+        }
     }
 `
