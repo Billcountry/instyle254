@@ -2,7 +2,7 @@ import { db } from "firebase-orient"
 
 export class User extends db.Model {
     constructor(name, email, user_id) {
-        super({
+        super("User", {
             user_id: db.stringField(),
             name: db.stringField(),
             email: db.stringField(),
@@ -18,7 +18,7 @@ export class User extends db.Model {
 
 export class Gallery extends db.Model {
     constructor(title, price, description, quantity, meta_data, images) {
-        super({
+        super("Gallery", {
             title: db.stringField(),
             price: db.numberField(),
             description: db.stringField(),
